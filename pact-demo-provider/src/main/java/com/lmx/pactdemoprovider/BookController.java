@@ -1,15 +1,15 @@
 package com.lmx.pactdemoprovider;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 public class BookController {
@@ -27,20 +27,17 @@ public class BookController {
     @PostMapping("/pact")
     ResponseEntity<Map> pact(@RequestBody DemoReq demoReq) {
         Map map = new HashMap();
-        map.put("hello", demoReq.getName());
-//        map.put("hello", "harry1");
+        map.put("token", demoReq.getName());
+        map.put("lastLoginIp", "harry");
+        map.put("lastLoginTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         return new ResponseEntity(map, HttpStatus.OK);
     }
 
+    @Data
     public static class DemoReq{
-        private String name;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
+        private String name,pwd;
+        private long expire;
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        private Date loginTime;
     }
 }

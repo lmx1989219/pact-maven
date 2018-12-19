@@ -9,8 +9,6 @@ import au.com.dius.pact.provider.spring.target.MockMvcTarget;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,7 +18,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 @RunWith(RestPactRunner.class)
 @Provider("Some Provider")
 @PactFolder("../pact/out")
-public class BooksPactProviderTest {
+public class PactProviderTest {
 
     //Create instance(s) of your controller(s).  We cannot autowire controllers as we're not using (and don't want to use) a Spring test runner.
     @InjectMocks
@@ -30,8 +28,6 @@ public class BooksPactProviderTest {
     //print verbose request/response information for all interactions with MockMvc.
     @TestTarget
     public final MockMvcTarget target = new MockMvcTarget();
-
-    private final DateTime DATE_TIME = DateTime.now(DateTimeZone.UTC).withTimeAtStartOfDay();
 
     @Before
     public void setup() throws Exception {
@@ -47,20 +43,11 @@ public class BooksPactProviderTest {
         );
     }
 
-
-    @State("update-book")
-    public void updateBook() {
-        // no setup needed
-    }
-
-    @State("delete-book")
-    public void deleteBook() {
-        // no setup needed
-    }
-
-    @State("update-book-no-content-type")
-    public void updateBookNoContentType() {
-        // no setup needed
+    /**
+     * 用于接口交互之前绑定响应对象
+     */
+    @State("pact-test")
+    public void pactTest() {
     }
 
 

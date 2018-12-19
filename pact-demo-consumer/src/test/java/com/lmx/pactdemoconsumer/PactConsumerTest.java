@@ -7,36 +7,38 @@ import au.com.dius.pact.model.RequestResponsePact;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import static au.com.dius.pact.consumer.ConsumerPactRunnerKt.runConsumerTest;
+import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonArray;
+import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
 import static org.junit.Assert.assertEquals;
 
-
-public class DirectDSLConsumerPactTest {
+public class PactConsumerTest {
     @Test
     public void testPact() {
         RequestResponsePact pact = ConsumerPactBuilder
                 .consumer("Some Consumer")
                 .hasPactWith("Some Provider")
-                .uponReceiving("a request to say Hello")
-                    .headers("content-type","application/json")
-                    .path("/api/pact")
-                    .method("POST")
-                    .body("{\"name\": \"harry\"}")
+                .given("pact-test")
+                .uponReceiving("hello pact")
+                .headers("content-type", "application/json")
+                .path("/api/pact")
+                .method("POST")
+//                    .body("{\"name\": \"harry\"}")
+                .body(newJsonBody((o) -> o.stringValue("name", "harry")).build())
                 .willRespondWith()
-                    .status(200)
-                    .body("{\"hello\": \"harry\"}")
+                .status(200)
+                .body("{\"hello\": \"harry\"}")
                 .uponReceiving("book list")
-                    .headers("content-type","application/json")
-                    .path("/api/book/list")
-                    .method("POST")
-                    .body("{\"type\": \"1\"}")
-                 .willRespondWith()
-                    .status(200)
-                    .body("[{\"author\":\"john\"}]")
+                .headers("content-type", "application/json")
+                .path("/api/book/list")
+                .method("POST")
+                .body("{\"type\": \"1\"}")
+                .willRespondWith()
+                .status(200)
+//                    .body("[{\"author\":\"john\"}]")
+                .body(newJsonArray((rootArray) -> rootArray.object((o) -> o.stringValue("author", "john"))).build())
                 .toPact();
 
         MockProviderConfig config = MockProviderConfig.createDefault();
@@ -58,9 +60,15 @@ public class DirectDSLConsumerPactTest {
         });
 
         if (result instanceof PactVerificationResult.Error) {
-            throw new RuntimeException(((PactVerificationResult.Error)result).getError());
+            throw new RuntimeException(((PactVerificationResult.Error) result).getError());
         }
 
         assertEquals(PactVerificationResult.Ok.INSTANCE, result);
+    }
+
+    @Test
+    public void testProxyPact() {
+        PactHttp pactHttp = (PactHttp) PactInvoker.getProxyObj(PactHttp.class);
+        pactHttp.hello(new PactHttp.Req("james", "123", 100L, new Date()));
     }
 }

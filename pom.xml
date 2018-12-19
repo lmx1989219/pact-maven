@@ -24,6 +24,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <pact.version>3.5.14</pact.version>
     </properties>
 
     <dependencyManagement>
@@ -44,17 +45,27 @@
             <dependency>
                 <groupId>au.com.dius</groupId>
                 <artifactId>pact-jvm-consumer-junit_2.12</artifactId>
-                <version>3.5.14</version>
+                <version>${pact.version}</version>
             </dependency>
             <dependency>
                 <groupId>au.com.dius</groupId>
                 <artifactId>pact-jvm-provider-junit_2.12</artifactId>
-                <version>3.5.14</version>
+                <version>${pact.version}</version>
             </dependency>
             <dependency>
                 <groupId>au.com.dius</groupId>
                 <artifactId>pact-jvm-provider-spring_2.12</artifactId>
-                <version>3.5.14</version>
+                <version>${pact.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>au.com.dius</groupId>
+                <artifactId>pact-jvm-consumer-java8_2.12</artifactId>
+                <version>${pact.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.16.18</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
