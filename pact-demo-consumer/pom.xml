@@ -47,6 +47,7 @@
 
     <build>
         <plugins>
+            <!--generator local pact file to specific dir-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -56,6 +57,20 @@
                         <pact.rootDir>../pact/out</pact.rootDir>
                         <buildDirectory>${project.build.directory}</buildDirectory>
                     </systemPropertyVariables>
+                </configuration>
+            </plugin>
+            <!--publish local pact file to pact broker-->
+            <plugin>
+                <groupId>au.com.dius</groupId>
+                <artifactId>pact-jvm-provider-maven_2.12</artifactId>
+                <version>3.5.14</version>
+                <configuration>
+                    <pactDirectory>../pact/out</pactDirectory> <!-- Defaults to ${project.build.directory}/pacts -->
+                    <pactBrokerUrl>http://127.0.0.1:9292</pactBrokerUrl>
+                    <pactBrokerUsername>admin</pactBrokerUsername>
+                    <pactBrokerPassword>admin</pactBrokerPassword>
+                    <projectVersion>1.0.100</projectVersion> <!-- Defaults to ${project.version} -->
+                    <trimSnapshot>true</trimSnapshot> <!-- Defaults to false -->
                 </configuration>
             </plugin>
         </plugins>

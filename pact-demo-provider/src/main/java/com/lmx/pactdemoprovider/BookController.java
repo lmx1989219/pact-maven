@@ -36,7 +36,7 @@ public class BookController {
     @Data
     public static class DemoReq{
         private String name,pwd;
-        private long expire;
+        private Long expire;
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private Date loginTime;
     }

@@ -4,6 +4,7 @@ import au.com.dius.pact.consumer.ConsumerPactBuilder;
 import au.com.dius.pact.consumer.PactVerificationResult;
 import au.com.dius.pact.model.MockProviderConfig;
 import au.com.dius.pact.model.RequestResponsePact;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,7 +15,11 @@ import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonArray;
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
 import static org.junit.Assert.assertEquals;
 
+@Slf4j
 public class PactConsumerTest {
+    /**
+     * 契约测试遵循字段严格匹配的约定
+     */
     @Test
     public void testPact() {
         RequestResponsePact pact = ConsumerPactBuilder
@@ -66,9 +71,13 @@ public class PactConsumerTest {
         assertEquals(PactVerificationResult.Ok.INSTANCE, result);
     }
 
+    /**
+     * 契约测试遵循字段类型即可，当然也可以使用正则等
+     */
     @Test
     public void testProxyPact() {
         PactHttp pactHttp = (PactHttp) PactInvoker.getProxyObj(PactHttp.class);
-        pactHttp.hello(new PactHttp.Req("james", "123", 100L, new Date()));
+        PactHttp.Resp resp = pactHttp.hello(new PactHttp.Req("james", "123", 100L, new Date()));
+        log.info("cdc resp={}", resp);
     }
 }

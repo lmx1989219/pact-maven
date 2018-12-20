@@ -18,7 +18,7 @@ public interface PactHttp {
     class Req {
         private String name;
         private String pwd;
-        private long expire;
+        private Long expire;
         private Date loginTime;
     }
 

@@ -7,6 +7,9 @@ import org.apache.http.entity.ContentType;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * 服务提供端mock接口
+ */
 public class PactProviderClient {
 
     private final String url;
