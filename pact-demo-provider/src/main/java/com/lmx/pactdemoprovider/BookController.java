@@ -1,17 +1,21 @@
 package com.lmx.pactdemoprovider;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
+@RequestMapping("/api")
 public class BookController {
 
     @PostMapping("/book/list")
@@ -39,5 +43,14 @@ public class BookController {
         private Long expire;
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private Date loginTime;
+        private InnerReq inner;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class InnerReq {
+        private String tel;
+        private String email;
     }
 }

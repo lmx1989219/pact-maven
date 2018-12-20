@@ -2,6 +2,7 @@ package com.lmx.pactdemoconsumer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -14,12 +15,22 @@ public interface PactHttp {
     Resp hello(Req body);
 
     @Data
+    @NoArgsConstructor
     @AllArgsConstructor
     class Req {
         private String name;
         private String pwd;
         private Long expire;
         private Date loginTime;
+        private InnerReq inner;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    class InnerReq {
+        private String tel;
+        private String email;
     }
 
     @Data

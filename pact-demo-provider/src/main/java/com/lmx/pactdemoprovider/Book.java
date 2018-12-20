@@ -1,18 +1,18 @@
 package com.lmx.pactdemoprovider;
 
-import org.joda.time.DateTime;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class Book {
     private UUID id;
     private String author;
     private boolean bestSeller;
-    private DateTime createdOn;
+    private Date createdOn;
 
     public Book() {}
 
-    public Book(UUID id, String author, boolean bestSeller, DateTime createdOn) {
+    public Book(UUID id, String author, boolean bestSeller, Date createdOn) {
         this.id = id;
         this.author = author;
         this.bestSeller = bestSeller;
@@ -43,11 +43,11 @@ public class Book {
         this.bestSeller = bestSeller;
     }
 
-    public DateTime getCreatedOn() {
+    public Date getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(DateTime createdOn) {
+    public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
     }
 

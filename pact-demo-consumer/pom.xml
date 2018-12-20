@@ -66,7 +66,7 @@
                 <version>3.5.14</version>
                 <configuration>
                     <pactDirectory>../pact/out</pactDirectory> <!-- Defaults to ${project.build.directory}/pacts -->
-                    <pactBrokerUrl>http://127.0.0.1:9292</pactBrokerUrl>
+                    <pactBrokerUrl>http://localhost:9292</pactBrokerUrl>
                     <pactBrokerUsername>admin</pactBrokerUsername>
                     <pactBrokerPassword>admin</pactBrokerPassword>
                     <projectVersion>1.0.100</projectVersion> <!-- Defaults to ${project.version} -->

@@ -77,7 +77,7 @@ public class PactConsumerTest {
     @Test
     public void testProxyPact() {
         PactHttp pactHttp = (PactHttp) PactInvoker.getProxyObj(PactHttp.class);
-        PactHttp.Resp resp = pactHttp.hello(new PactHttp.Req("james", "123", 100L, new Date()));
+        PactHttp.Resp resp = pactHttp.hello(new PactHttp.Req("james", "123", 100L, new Date(), new PactHttp.InnerReq("15821303235", "285980382@qq.com")));
         log.info("cdc resp={}", resp);
     }
 }

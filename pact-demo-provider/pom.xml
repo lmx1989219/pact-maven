@@ -32,14 +32,17 @@
         <dependency>
             <groupId>au.com.dius</groupId>
             <artifactId>pact-jvm-consumer-junit_2.12</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>au.com.dius</groupId>
             <artifactId>pact-jvm-provider-junit_2.12</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>au.com.dius</groupId>
             <artifactId>pact-jvm-provider-spring_2.12</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.lmx</groupId>

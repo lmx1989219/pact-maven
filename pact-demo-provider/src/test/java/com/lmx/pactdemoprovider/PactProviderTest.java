@@ -33,7 +33,7 @@ public class PactProviderTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         target.setControllers(bookController);
-        target.setServletPath("/api");
+        target.setServletPath("");
         target.setMessageConvertors(
                 new MappingJackson2HttpMessageConverter(
                         new ObjectMapper()
