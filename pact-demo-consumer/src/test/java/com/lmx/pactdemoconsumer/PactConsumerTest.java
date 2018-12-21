@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 @Slf4j
 public class PactConsumerTest {
     /**
-     * 契约测试遵循字段严格匹配的约定
+     * simple demo
      */
     @Test
     public void testPact() {
@@ -72,12 +72,25 @@ public class PactConsumerTest {
     }
 
     /**
-     * 契约测试遵循字段类型即可，当然也可以使用正则等
+     * support restTemplate/httpClient pact testing
+     *
      */
     @Test
     public void testProxyPact() {
         PactHttp pactHttp = (PactHttp) PactInvoker.getProxyObj(PactHttp.class);
-        PactHttp.Resp resp = pactHttp.hello(new PactHttp.Req("james", "123", 100L, new Date(), new PactHttp.InnerReq("15821303235", "285980382@qq.com")));
+        PactHttp.Resp resp = pactHttp.hello(new PactHttp.Req("james", "123", 100L, new Date(),
+                new PactHttp.InnerReq("15821303235", "285980382@qq.com")));
+        log.info("cdc resp={}", resp);
+    }
+
+    /**
+     * support feignClient pact testing
+     */
+    @Test
+    public void testProxyFeignPact() {
+        PactFeignClient feignClient = (PactFeignClient) PactFeignClientInvoker.getProxyObj(PactFeignClient.class);
+        PactHttp.Resp resp = feignClient.hello(new PactHttp.Req("james", "123", 100L, new Date(),
+                new PactHttp.InnerReq("15821303235", "285980382@qq.com")));
         log.info("cdc resp={}", resp);
     }
 }

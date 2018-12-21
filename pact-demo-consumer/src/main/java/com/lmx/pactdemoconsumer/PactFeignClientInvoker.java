@@ -8,6 +8,8 @@ import au.com.dius.pact.model.RequestResponsePact;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -20,17 +22,17 @@ import static org.junit.Assert.assertEquals;
 /**
  * 契约测试执行器
  * <p>
- * 目标类：模拟restTemplate,httpClient的请求响应
+ * 目标类：feignClient
  */
-public class PactInvoker implements InvocationHandler {
+public class PactFeignClientInvoker implements InvocationHandler {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static PactInvoker pactInvoker = new PactInvoker();
+    private static PactFeignClientInvoker pactInvoker = new PactFeignClientInvoker();
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
-        Cdc cdc = method.getDeclaringClass().getDeclaredAnnotation(Cdc.class);
-        CdcInfo cdcInfo = method.getDeclaredAnnotation(CdcInfo.class);
+        FeignClient cdc = method.getDeclaringClass().getDeclaredAnnotation(FeignClient.class);
+        RequestMapping cdcInfo = method.getDeclaredAnnotation(RequestMapping.class);
         Object reqBody = args[0];
         PactDslJsonBody req = new PactDslJsonBody();
         PactDslJsonBody req_ = null;
@@ -42,11 +44,11 @@ public class PactInvoker implements InvocationHandler {
         PactDslJsonBody resp = new PactDslJsonBody();
         PactDslJsonBodyUtil.buildRespJson(method.getReturnType(), resp);
         RequestResponsePact pact = ConsumerPactBuilder
-                .consumer(cdc.consumer())
-                .hasPactWith(cdc.provider())
-                .uponReceiving(cdc.reqDesc())
-                .path(cdcInfo.reqPath())
-                .method(cdcInfo.reqMethod())
+                .consumer(System.getProperty("spring.application.name"))
+                .hasPactWith(cdc.value())
+                .uponReceiving("it's a feign api")
+                .path(cdcInfo.value()[0])
+                .method(cdcInfo.method() == null ? "POST" : cdcInfo.method()[0].toString())
                 .body(req_)
                 .willRespondWith()
                 .status(200)
@@ -56,7 +58,7 @@ public class PactInvoker implements InvocationHandler {
         StringBuilder stringBuilder = new StringBuilder();
         PactVerificationResult result = runConsumerTest(pact, config, mockServer -> {
             try {
-                org.json.JSONObject jsonObject = new PactProviderClient(mockServer.getUrl()).pactMock((org.json.JSONObject) req.getBody(), cdcInfo.reqPath());
+                org.json.JSONObject jsonObject = new PactProviderClient(mockServer.getUrl()).pactMock((org.json.JSONObject) req.getBody(), cdcInfo.value()[0]);
                 assertEquals(jsonObject.toString(), resp.getBody().toString());
                 stringBuilder.append(jsonObject.toString());
             } catch (IOException e) {
@@ -72,6 +74,6 @@ public class PactInvoker implements InvocationHandler {
     }
 
     public static Object getProxyObj(Class interface_) {
-        return Proxy.newProxyInstance(PactInvoker.class.getClassLoader(), new Class[]{interface_}, pactInvoker);
+        return Proxy.newProxyInstance(PactFeignClientInvoker.class.getClassLoader(), new Class[]{interface_}, pactInvoker);
     }
 }

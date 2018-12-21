@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * 模拟feignClient
+ * 适用于restTemplate,httpClient这样没有客户端代码的情况
  */
 @Cdc(provider = "Some Provider", consumer = "Some Consumer", reqDesc = "hello pact")
 public interface PactHttp {

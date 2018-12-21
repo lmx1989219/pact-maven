@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * 服务提供端mock接口
+ * mock provider
  */
 public class PactProviderClient {
 
@@ -25,7 +25,7 @@ public class PactProviderClient {
         org.json.JSONObject resp = new org.json.JSONObject();
         JSONObject json = JSONObject.parseObject(response);
         for (Map.Entry e : json.entrySet())
-            resp.put(e.getKey().toString(),e.getValue());
+            resp.put(e.getKey().toString(), e.getValue());
         return resp;
     }
 }

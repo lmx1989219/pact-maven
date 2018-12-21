@@ -43,6 +43,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-netflix-core</artifactId>
+                <version>1.2.4.RELEASE</version>
+            </dependency>
+
+            <dependency>
                 <groupId>au.com.dius</groupId>
                 <artifactId>pact-jvm-consumer-junit_2.12</artifactId>
                 <version>${pact.version}</version>
