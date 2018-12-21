@@ -17,6 +17,9 @@ import static org.junit.Assert.assertEquals;
 
 @Slf4j
 public class PactConsumerTest {
+    PactInvoker pactInvoker = new PactInvoker();
+    PactFeignClientInvoker pactFeignClientInvoker = new PactFeignClientInvoker();
+
     /**
      * simple demo
      */
@@ -73,11 +76,10 @@ public class PactConsumerTest {
 
     /**
      * support restTemplate/httpClient pact testing
-     *
      */
     @Test
     public void testProxyPact() {
-        PactHttp pactHttp = (PactHttp) PactInvoker.getProxyObj(PactHttp.class);
+        PactHttp pactHttp = (PactHttp) pactInvoker.getProxyObj(PactHttp.class);
         PactHttp.Resp resp = pactHttp.hello(new PactHttp.Req("james", "123", 100L, new Date(),
                 new PactHttp.InnerReq("15821303235", "285980382@qq.com")));
         log.info("cdc resp={}", resp);
@@ -88,7 +90,7 @@ public class PactConsumerTest {
      */
     @Test
     public void testProxyFeignPact() {
-        PactFeignClient feignClient = (PactFeignClient) PactFeignClientInvoker.getProxyObj(PactFeignClient.class);
+        PactFeignClient feignClient = (PactFeignClient) pactFeignClientInvoker.getProxyObj(PactFeignClient.class);
         PactHttp.Resp resp = feignClient.hello(new PactHttp.Req("james", "123", 100L, new Date(),
                 new PactHttp.InnerReq("15821303235", "285980382@qq.com")));
         log.info("cdc resp={}", resp);
