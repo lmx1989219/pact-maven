@@ -1,8 +1,8 @@
-**pact testing demo with maven project**
+# pact testing demo with maven project
 
-##features
-1. support springMVC
-2. support springCloud
+## features
+    1. support springMVC
+    2. support springCloud
 
 >install broker
     
