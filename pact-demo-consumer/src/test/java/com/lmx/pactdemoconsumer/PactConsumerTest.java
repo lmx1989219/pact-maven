@@ -5,6 +5,7 @@ import au.com.dius.pact.consumer.PactVerificationResult;
 import au.com.dius.pact.model.MockProviderConfig;
 import au.com.dius.pact.model.RequestResponsePact;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class PactConsumerTest {
     /**
      * simple demo
      */
-    @Test
+//    @Test
     public void testPact() {
         RequestResponsePact pact = ConsumerPactBuilder
                 .consumer("Some Consumer")
@@ -75,13 +76,44 @@ public class PactConsumerTest {
     }
 
     /**
+     * mock responseEntity
+     */
+    @Before
+    public void bindMockResp() {
+        PactHttp.Resp respMock = PactHttp.Resp.builder().code(1).message("ok").data(
+                PactHttp.LoginDto.builder()
+                        .lastLoginIp("127.0.0.1")
+                        .lastLoginTime(new Date())
+                        .token("1234567890ABCDEF")
+                        .build()
+        ).build();
+        PactUtil.pactHolder.set(respMock);
+    }
+
+    /**
      * support restTemplate/httpClient pact testing
      */
     @Test
-    public void testProxyPact() {
+    public void testMVCPactObj() {
         PactHttp pactHttp = (PactHttp) pactInvoker.getProxyObj(PactHttp.class);
         PactHttp.Resp resp = pactHttp.hello(new PactHttp.Req("james", "123", 100L, new Date(),
                 new PactHttp.InnerReq("15821303235", "285980382@qq.com")));
+        log.info("cdc resp={}", resp);
+    }
+
+    @Test
+    public void testMVCPactStr() {
+        PactHttp pactHttp = (PactHttp) pactInvoker.getProxyObj(PactHttp.class);
+        String resp = pactHttp.hello("{\n" +
+                "                    \"loginTime\": \"2018-12-24 14:54:35\",\n" +
+                "                    \"expire\": 100,\n" +
+                "                    \"name\": \"james\",\n" +
+                "                    \"pwd\": \"123\",\n" +
+                "                    \"inner\": {\n" +
+                "                        \"tel\": \"15821303235\",\n" +
+                "                        \"email\": \"285980382@qq.com\"\n" +
+                "                    }\n" +
+                "                }");
         log.info("cdc resp={}", resp);
     }
 
@@ -89,10 +121,10 @@ public class PactConsumerTest {
      * support feignClient pact testing
      */
     @Test
-    public void testProxyFeignPact() {
+    public void testFeignPact() {
         PactFeignClient feignClient = (PactFeignClient) pactFeignClientInvoker.getProxyObj(PactFeignClient.class);
-        PactHttp.Resp resp = feignClient.hello(new PactHttp.Req("james", "123", 100L, new Date(),
+        PactHttp.Resp resp_ = feignClient.hello(new PactHttp.Req("james", "123", 100L, new Date(),
                 new PactHttp.InnerReq("15821303235", "285980382@qq.com")));
-        log.info("cdc resp={}", resp);
+        log.info("cdc resp={}", resp_);
     }
 }

@@ -30,16 +30,20 @@ public class BookController {
 
     @PostMapping("/pact")
     ResponseEntity<Map> pact(@RequestBody DemoReq demoReq) {
+        Map root = new HashMap();
         Map map = new HashMap();
         map.put("token", demoReq.getName());
         map.put("lastLoginIp", "harry");
         map.put("lastLoginTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        return new ResponseEntity(map, HttpStatus.OK);
+        root.put("code", 1);
+        root.put("message", "ok");
+        root.put("data", map);
+        return new ResponseEntity(root, HttpStatus.OK);
     }
 
     @Data
-    public static class DemoReq{
-        private String name,pwd;
+    public static class DemoReq {
+        private String name, pwd;
         private Long expire;
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private Date loginTime;

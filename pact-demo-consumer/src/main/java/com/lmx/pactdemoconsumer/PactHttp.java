@@ -1,6 +1,7 @@
 package com.lmx.pactdemoconsumer;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +13,10 @@ import java.util.Date;
 @Cdc(provider = "Some Provider", consumer = "Some Consumer", reqDesc = "hello pact")
 public interface PactHttp {
     @CdcInfo(reqPath = "/api/pact")
-    Resp hello(Req body);
+    Resp<LoginDto> hello(Req body);
+
+    @CdcInfo(reqPath = "/api/pact")
+    String hello(String body);
 
     @Data
     @NoArgsConstructor
@@ -34,8 +38,20 @@ public interface PactHttp {
     }
 
     @Data
+    @Builder
+    @NoArgsConstructor
     @AllArgsConstructor
-    class Resp {
+    class Resp<T> {
+        private Integer code;
+        private String message;
+        private T data;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    class LoginDto {
         private String token;
         private String lastLoginIp;
         private Date lastLoginTime;

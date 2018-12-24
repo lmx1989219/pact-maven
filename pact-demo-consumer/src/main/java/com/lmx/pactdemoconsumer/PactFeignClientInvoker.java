@@ -1,5 +1,6 @@
 package com.lmx.pactdemoconsumer;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -21,12 +22,17 @@ public class PactFeignClientInvoker extends AbstractPactInvoker {
     public PactEntity buildPact(Method method) {
         FeignClient cdc = method.getDeclaringClass().getDeclaredAnnotation(FeignClient.class);
         RequestMapping cdcInfo = method.getDeclaredAnnotation(RequestMapping.class);
-        return PactEntity.builder()
-                .consumer(System.getProperty("spring.application.name"))
-                .provider(cdc.value())
-                .upon("a api desc")
-                .methodDesc(cdcInfo.method() == null ? "POST" : cdcInfo.method()[0].toString())
-                .path(cdcInfo.value()[0])
-                .build();
+        try {
+            return PactEntity.builder()
+                    .consumer(System.getProperty("spring.application.name"))
+                    .provider(cdc.value())
+                    .upon("a api desc")
+                    .methodDesc(cdcInfo.method() == null ? "POST" : cdcInfo.method()[0].toString())
+                    .path(cdcInfo.value()[0])
+                    .mockResp(PactUtil.pactHolder.get())
+                    .build();
+        } finally {
+            PactUtil.pactHolder.remove();
+        }
     }
 }

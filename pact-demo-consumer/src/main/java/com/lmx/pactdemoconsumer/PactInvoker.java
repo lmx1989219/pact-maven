@@ -1,5 +1,7 @@
 package com.lmx.pactdemoconsumer;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -18,12 +20,17 @@ public class PactInvoker extends AbstractPactInvoker {
     public PactEntity buildPact(Method method) {
         Cdc cdc = method.getDeclaringClass().getDeclaredAnnotation(Cdc.class);
         CdcInfo cdcInfo = method.getDeclaredAnnotation(CdcInfo.class);
-        return PactEntity.builder()
-                .consumer(cdc.consumer())
-                .provider(cdc.consumer())
-                .upon(cdc.reqDesc())
-                .methodDesc(cdcInfo.reqMethod())
-                .path(cdcInfo.reqPath())
-                .build();
+        try {
+            return PactEntity.builder()
+                    .consumer(cdc.consumer())
+                    .provider(cdc.provider())
+                    .upon(cdc.reqDesc())
+                    .methodDesc(cdcInfo.reqMethod())
+                    .path(cdcInfo.reqPath())
+                    .mockResp(PactUtil.pactHolder.get())
+                    .build();
+        } finally {
+            PactUtil.pactHolder.remove();
+        }
     }
 }

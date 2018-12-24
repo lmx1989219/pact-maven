@@ -9,10 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PactEntity {
+public class PactEntity<T> {
     private String methodDesc;
     private String path;
     private String upon;
     private String provider;
     private String consumer;
+    private T mockResp;
 }

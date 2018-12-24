@@ -24,6 +24,8 @@ public class PactProviderClient {
                 .execute().returnContent().asString();
         org.json.JSONObject resp = new org.json.JSONObject();
         JSONObject json = JSONObject.parseObject(response);
+        if (json == null)
+            return resp;
         for (Map.Entry e : json.entrySet())
             resp.put(e.getKey().toString(), e.getValue());
         return resp;

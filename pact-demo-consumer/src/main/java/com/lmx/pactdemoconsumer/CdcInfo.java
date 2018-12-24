@@ -14,4 +14,6 @@ public @interface CdcInfo {
     String reqMethod() default "post";
 
     String reqHead() default "application/json";
+
+    String mockResp() default "{\"code\":1,\"message\":\"ok\",\"data\":null}";
 }
