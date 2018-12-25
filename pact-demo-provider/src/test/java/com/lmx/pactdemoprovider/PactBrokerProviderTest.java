@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @RunWith(SpringRestPactRunner.class)
-@Provider("Some Provider")
+@Provider("sc.provider")
 @PactBroker
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PactBrokerProviderTest {
